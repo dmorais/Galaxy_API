@@ -1,0 +1,31 @@
+---
+# Format
+# This yaml file is workflow-centric. All tags are related to a workflow
+# Multiple workflows can be added to this file
+# Tags:
+#
+#   - name: it is the workflow name. It should be unique and correspond to the
+#           workflow file name
+#
+#   - workflow_path: Full path to the directory containnig the workflow (MUST be ended by '/)
+#
+#   - inputs: A list of file names, that are used as inputs in the workflow
+#
+#   - inputs_path: Full path to the inputs. (Note that all inputs MUST be in the same directory)
+#
+#   - input_label: A label for each input, in the same order as the input appears in the inputs section.
+#                  IMPORTANT: A label MUST match the input label in the workflow inside galaxy
+#
+#   - dbkey: (optional) a dbkey of the genome of the input file.
+#
+
+- name: clean_seq
+  workflow_path: workflows/
+  inputs:
+    - Test.fastq
+  inputs_path: datasets/
+  inputs_label:
+    - fastq
+  dbkey:
+    - hg19
+

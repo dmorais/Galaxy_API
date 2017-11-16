@@ -1,0 +1,35 @@
+---
+# Format
+# this is a yaml file that should be used with the create_library.py script
+#
+#
+#   UPLOADING LOCAL FILES
+#   - name: Library name
+#   - description: can be an '' (empty string). Used to describe the library
+#   - folder: Folder name inside the library (files will be put there)
+#   - inputs: a List of local files names
+#   - inputs_path: the path to the inputs (ALL inputs MUST be in the same dir)
+#
+#
+#  UPLOADING FILES FROM A SERVER
+#   - name: Library name
+#   - description: can be an '' (empty string). Used to describe the library
+#   - folder: Folder name inside the library (files will be put there)
+#   - inputs: THIS MUST BE AN EMPTY LIST []
+#   - urls: A list of urls to the file to be uploaded.
+
+
+
+- name: seq_cleans
+  description: My test API lib
+  folder: dirty_fastq
+  inputs:
+    - Test.fastq
+  input_path: datasets
+
+- name: from_hub
+  description: Uploaded from data hub through API
+  folder: dirty_vcf
+  inputs: []
+  urls:
+    - https://datahub-qfw3js0t.udes.genap.ca/genap2/data-test/bcftools-test/concat.1.a.vcf

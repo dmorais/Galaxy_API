@@ -1,0 +1,15 @@
+---
+# Format
+# This yml file is to be used with the script run_workflow_from_library_file.py
+#
+#   - name: workflow name
+#   - inputs: A list of input file inside a library
+#   - input_lable: a list of labels that matches the label or name of each input in a pipeline
+#   - lib_name: Library name, the name of the library where the input files are (no need to put the subdirectory)
+
+- name: clean_seq
+  inputs:
+    - Test.fastq
+  input_label:
+    - fastq
+  lib_name: clean_seq
