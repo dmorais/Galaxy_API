@@ -1,8 +1,144 @@
 from collections import namedtuple
 from bioblend import galaxy
 import yaml
-import pprint
+from pprint import pprint
 import sys
+from config import *
+import os
+
+
+def create_user(gi, email, logger):
+    '''
+
+    :param gi: Galaxy instance object
+    :param email: user email (or string representing a email)
+    :return: user_id (str)
+    '''
+
+    user_obj = gi.users.create_remote_user(user_email=email)
+
+    msg = "USER CREATED: user_name=" + email + " id=" +  user_obj['id']
+    logger.info(msg)
+    return user_obj['id']
+
+
+def create_api_key(gi, id):
+    '''
+    :description: Check if a user already has an api_key, if not create one
+    :param gi: Galaxy instance object
+    :param id: user id
+    :return: api key (str)
+    '''
+
+    # Check if the user already has an api_key
+    api_key = gi.users.get_user_apikey(id)
+
+    # Create one if it does not exists
+    if api_key == 'Not available.':
+        api_key = gi.users.create_user_apikey(id)
+
+    return api_key
+
+
+def delete_user(gi, id, logger):
+    '''
+
+    :param gi: Galaxy instance object
+    :param id: user id
+    :param logger: a logger object
+    :return: 0
+    '''
+
+    user_obj = gi.users.delete_user(user_id=id, purge=False)
+    msg = "DELETED USER: " + user_obj['username']
+    logger.info(msg)
+
+    return 0
+
+
+def get_user(gi, email, logger):
+    '''
+
+    :param gi: Galaxy instance object
+    :param email: user email (or string representing a email)
+    :return: user id (str)
+    '''
+
+    user_obj = gi.users.get_users(deleted=False)
+    for user in user_obj:
+        if user['email'] == email:
+
+            msg = "EXISTING USER REQEUEST: user_name=" + email + " id=" +  user['id']
+            logger.info(msg)
+
+            return user['id']
+
+    else:
+            msg = "User " + email + " is not on the data base. Please check credentials."
+            logger.error(msg)
+            sys.exit(1)
+
+
+def get_library_id(gi, name):
+    '''
+
+    :param gi: Galaxy instance object
+    :param name: library name
+    :return: library id (str)
+    '''
+    lib_obj = gi.libraries.get_libraries(name=name)
+
+    # pprint(lib_obj)
+    return lib_obj[0]['id']
+
+
+def get_files_id(gi, lib_id, list_file_names):
+    '''
+        traverse all the libary tree and get the ids of all datasets that are included in the list of file names
+    :param gi: Galaxy instance object
+    :param lib_id: library Id
+    :param list_file_names: a list containing all the files that will be imported to the history
+    :return: a list of library files ids.
+    '''
+
+    lib_obj = gi.libraries.show_library(library_id=lib_id, contents=True)
+
+    file_ids = list()
+
+    for item in lib_obj:
+        if item['type'] == 'file' and item['name'] in list_file_names:
+            file_ids.append(item['id'])
+            # print 'name:', item['name'], 'id: ', item['id']
+
+    return file_ids
+
+
+def upload_from_lib(gi, hist_id, file_id, logger):
+    '''
+
+    :param gi: Galaxy instance object
+    :param hist_id: history ID
+    :param file_id: a list of ids corresponding to the files that will be uploaded to the user's history
+    :return:
+    '''
+    for id in file_id:
+        gi.histories.upload_dataset_from_library(history_id=hist_id, lib_dataset_id=id)
+
+    msg = "Files have been uploaded to history"
+    logger.info(msg)
+
+
+def create_history(gi, name=None):
+    '''
+
+    :param gi: Galaxy instance object
+    :param name: history name
+    :return:
+    '''
+
+    hist_obj = gi.histories.create_history(name=name)
+    return hist_obj['id']
+
 
 def get_history(gi, name=None):
     '''
@@ -52,6 +188,21 @@ def get_datset_name(gi, d_id):
     return data_name_obj['name']
 
 
+def safe_galaxy_instance(logger, api_key=None):
+    '''
+    Safer version of 'get_galaxy_instance'. Credentials are imported as env variables, or passed during run time.
+    :param api_key: A galaxy api key to be passed during execution or via env variable (export API_KEY='')
+    :return:a galaxy instance object
+    '''
+
+    if api_key is None:
+        api_key = os.environ['API_KEY']
+
+    gi = galaxy.GalaxyInstance(url=config['g_url'], key=api_key)
+
+    return gi
+
+
 def get_galaxy_instance(api_key, logger):
     '''
     :param api_key:
@@ -69,7 +220,8 @@ def get_galaxy_instance(api_key, logger):
 
         except IOError:
             logger.error('Failed to open file api_key', exc_info=True)
-            print "cannot open", api_key
+            print
+            "cannot open", api_key
 
 
 def read_workflow(yaml_file, logger):
@@ -86,7 +238,8 @@ def read_workflow(yaml_file, logger):
 
         except yaml.YAMLError as exc:
             logger.error('Failed to open file yaml file', exc_info=True)
-            print exc
+            print
+            exc
 
     # Create namedtuple from dictionary
     for work in workflows:
@@ -94,7 +247,6 @@ def read_workflow(yaml_file, logger):
         workflow_exp.append(workflow_nametup)
 
     return workflow_exp
-
 
 
 def get_workflow_id(gi, workflow_name, logger, workflow_path=None):
@@ -130,11 +282,9 @@ def get_workflow_id(gi, workflow_name, logger, workflow_path=None):
 
 
 def _upload_workflow(gi, workflow_name, workflow_path, logger):
-
     logger.info("Uploading new Workflow")
     work_obj = gi.workflows.import_workflow_from_local_path(file_local_path=workflow_path + workflow_name + ".ga")
     return work_obj['name'], work_obj['id']
-
 
 
 def workflow_inputs(gi, workflow_id, logger):
@@ -170,14 +320,13 @@ def create_wf_input_dict(gi, datasets, inputs, data, labels, src, logger):
     input_dict = dict()
     label_dict = dict(zip(data, labels))
 
-
     # Map each dataset name to a label
     for item in datasets:
         if item.name in label_dict:
             label_dict[label_dict[item.name]] = item.id
-            #label_dict.pop(item.name)
+            # label_dict.pop(item.name)
 
-     # Map each index to a label dictionary
+            # Map each index to a label dictionary
     for item in inputs:
         if item.label in label_dict:
             input_dict[item.index] = {
