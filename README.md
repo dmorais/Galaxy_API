@@ -18,7 +18,7 @@ and your Galaxy API key)
 #### 1. **create_library.py**
 
 
-Before using this script create a yml file  following the template 
+Before using this script create a yaml file  following the template 
 *yml_file/library.yml*.
 
 This script creates a Galaxy Library from one of three different sources:
@@ -28,9 +28,12 @@ This script creates a Galaxy Library from one of three different sources:
   Library
  *  **Server** will take file aready in the Galaxy server and symlink them
  to the Galaxy Library.
+ 
+ The script will know which option (local, url, server) to use based on
+ the yaml file.
 
 ```
-    python create_library.py api_key.txt yml_file.yml
+    python create_library.py api_key.txt yaml_file.yml
 
 ```
 
