@@ -86,10 +86,15 @@ def get_library_id(gi, name):
     :param name: library name
     :return: library id (str)
     '''
-    lib_obj = gi.libraries.get_libraries(name=name)
+    lib_obj = gi.libraries.get_libraries(name=name, deleted=False)
 
-    # pprint(lib_obj)
-    return lib_obj[0]['id']
+    if len(lib_obj) > 0:
+        for lib in lib_obj:
+            if lib['deleted']==False and lib['name']==name:
+                lib_obj = lib
+                break
+
+    return lib_obj['id']
 
 
 def get_files_id(gi, lib_id, list_file_names):

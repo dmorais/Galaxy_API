@@ -23,11 +23,25 @@ def main():
     # option parser
     parser = argparse.ArgumentParser(
         description="A tool to create user on Galaxy and transfer IHEC datasets to the user history")
-    parser.add_argument("-s", "--samples", action="store", help="False file with the sample names",
-                        required=False)  # Must change in prod (required= True)
-    parser.add_argument("-d", "--delete", action="store", help="Id of the user to be deleted", required=False)
-    parser.add_argument("-e", "--email", action="store", help="User email on Galaxy (if user is already registered)",
+    parser.add_argument("-s", "--samples", action="store",
+                        help="False file with the sample names",
+                        required=True)  
+
+    parser.add_argument("-d", "--delete", action="store",
+                        help="Id of the user to be deleted",
                         required=False)
+
+    parser.add_argument("-e", "--email", action="store",
+                        help="User email on Galaxy (if user is already registered)",
+                        required=False)
+
+    parser.add_argument("-his", "--history_id", action="store",
+                        help="A Galaxy history id. If provided the files will be uploaded to this history.",
+                        required=False)
+
+    parser.add_argument("-l", "--library", action="store",
+                        help="Name of the library holding the files.",
+                        required=True)
 
     args = parser.parse_args()
 
@@ -37,6 +51,7 @@ def main():
     user_id = ''
     user_api_key = ''
     email = ''
+    user_hist_id = ''
 
 
     msg = "# NEW REQUEST #"
@@ -70,11 +85,14 @@ def main():
 
 
     # create history
-    now = datetime.now().strftime("%Y-%m-%d_%H:%M")
-    user_hist_id = create_history(gi_user, 'IHEC_' + now)
+    if args.history_id:
+        user_hist_id = args.history_id
+    else:
+        now = datetime.now().strftime("%Y-%m-%d_%H:%M")
+        user_hist_id = create_history(gi_user, args.library + '_' + now)
 
     # Get Library id
-    lib_id = get_library_id(gi_user, 'IHEC')
+    lib_id = get_library_id(gi_user, args.library)
 
     # Get list of file ids
     file_id = get_files_id(gi_user, lib_id, sample_names)
@@ -88,7 +106,8 @@ def main():
     # create proxy pass
     command = 'sudo /proxydata/adduser.sh ' + email  + ' ' + password
     url = subprocess.check_output(command, shell=True)
-    print url
+
+    print url, email, user_hist_id
 
 
 if __name__ == '__main__':
