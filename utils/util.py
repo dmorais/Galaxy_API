@@ -15,7 +15,7 @@ def create_random_email():
     '''
 
     email = ''.join([random.choice(char) for i in range(9)])
-    return email
+    return email + '@galaxy.genap.ca'
 
 
 def create_random_password():

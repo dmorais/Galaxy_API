@@ -22,9 +22,9 @@ and your Galaxy API key)
 
 ## Set up on Galaxy
 This Galaxy option must be set to a dir inside galaxy server.
-
+````
 library_import_dir = /srv/galaxy/galaxy-data-library/
-
+````
 Before using this script create a yaml file  following the template 
 *yml_file/library.yml*.
 
@@ -52,9 +52,9 @@ This script creates a Galaxy Library from one of three different sources:
 This Galaxy option must be set to True. The Galaxy authetication must be
  handled by a proxy. If not the option -email of the script will be required
  and the script will not create random accounts.
- 
+```` 
 use_remote_user = True
-
+````
 This script creates a user on Galaxy (if it does not exists), handles its
 authentication, and adds to the user's history all datasets passed
 to it (inside of a file). The datasets must be inside of the Galaxy Library.
