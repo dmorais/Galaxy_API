@@ -99,7 +99,7 @@ def get_library_id(gi, name):
 
 def get_files_id(gi, lib_id, list_file_names):
     '''
-        traverse all the libary tree and get the ids of all datasets that are included in the list of file names
+    traverse all the libary tree and get the ids of all datasets that are included in the list of file names
     :param gi: Galaxy instance object
     :param lib_id: library Id
     :param list_file_names: a list containing all the files that will be imported to the history

@@ -24,7 +24,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="A tool to create user on Galaxy and transfer IHEC datasets to the user history")
     parser.add_argument("-s", "--samples", action="store",
-                        help="False file with the sample names",
+                        help="File with the sample's Library path",
                         required=True)  
 
     parser.add_argument("-d", "--delete", action="store",
