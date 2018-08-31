@@ -45,7 +45,7 @@ This script creates a Galaxy Library from one of three different sources:
 ```
 
 
-    python create_library.py api_key.txt yaml_file.yml
+    python create_library.py yaml_file.yml
 
 ```
 
