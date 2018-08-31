@@ -44,9 +44,9 @@ def create_libary(gi, name, description):
                 lib_obj = lib
                 break
 
-        else:
-            logger.info("Creating Library")
-            lib_obj = gi.libraries.create_library(name=name, description=description)
+    else:
+        logger.info("Creating Library")
+        lib_obj = gi.libraries.create_library(name=name, description=description)
 
 
     l = namedtuple('library', 'id name')
@@ -156,17 +156,16 @@ def upload_from_server(gi, lib_id, server_dir, folder_id):
 
 def main():
 
-    if len(sys.argv) != 3:
-        print "USAGE:\n\tpython {} api_key.txt yaml_file".format(sys.argv[0])
+    if len(sys.argv) != 2:
+        print "USAGE:\n\tpython {} yaml_file".format(sys.argv[0])
         logging.error("Bad args", exc_info=True)
         sys.exit(1)
 
     logger.info("############ STARTING " + sys.argv[0] + '#############')
 
-    api_key = sys.argv[1]
     yaml_file_name = sys.argv[2]
 
-    gi = get_galaxy_instance(api_key,logger)
+    gi = safe_galaxy_instance(logger)
     yaml_file = read_workflow(yaml_file_name,logger)
 
 

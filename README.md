@@ -13,9 +13,12 @@ Bioblend 0.11.0
 ### **Installation**
 After cloning edit these files:
 * util/config.py  (add server and port to the dictionary)
-* api_key.txt.template (copy it as api_key.txt add your server, port
-and your Galaxy API key)
 
+on your .bashrc add the line
+````
+export  API_KEY=
+````
+Where the API_KEY is the Admin Galaxy API key created from the GUI
 
 ## Scripts
 #### 1. **create_library.py**
