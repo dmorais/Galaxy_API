@@ -163,7 +163,7 @@ def main():
 
     logger.info("############ STARTING " + sys.argv[0] + '#############')
 
-    yaml_file_name = sys.argv[2]
+    yaml_file_name = sys.argv[1]
 
     gi = safe_galaxy_instance(logger)
     yaml_file = read_workflow(yaml_file_name,logger)
