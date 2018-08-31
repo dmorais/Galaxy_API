@@ -104,7 +104,7 @@ def main():
     password = create_random_password()
 
     # create proxy pass
-    command = 'sudo /proxydata/adduser.sh ' + email  + ' ' + password
+    command = 'sh /proxydata/adduser.sh ' + email  + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
     print url, email, user_hist_id
