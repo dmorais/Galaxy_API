@@ -20,6 +20,14 @@ export  API_KEY=
 ````
 Where the API_KEY is the Admin Galaxy API key created from the GUI
 
+## IMPORTANT
+
+before using any script you must source the python env
+
+```
+source /cvmfs/soft.galaxy/v2/server/.venv/bin/activate
+```
+
 ## Scripts
 #### 1. **create_library.py**
 
