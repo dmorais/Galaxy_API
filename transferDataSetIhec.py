@@ -7,7 +7,7 @@ import logging
 import pprint
 from utils.loggerinitializer import *
 from utils.giobjects import *
-from utils.util import *
+from utils.util import create_random_email, create_random_password, read_file, parse_samples
 from distutils.dir_util import mkpath
 import subprocess
 from datetime import datetime
@@ -25,7 +25,7 @@ def main():
         description="A tool to create user on Galaxy and transfer IHEC datasets to the user history")
     parser.add_argument("-s", "--samples", action="store",
                         help="File with the sample's Library path",
-                        required=True)  
+                        required=False)
 
     parser.add_argument("-d", "--delete", action="store",
                         help="Id of the user to be deleted",
@@ -45,17 +45,22 @@ def main():
 
     args = parser.parse_args()
 
-    # Parse sample files
-    sample_names = parse_samples(args.samples)
+    # Parse samples
+    if args.samples is not None:
+        sample_names = parse_samples(read_file(args.samples))
+    else:
+        stdin = sys.stdin.read().strip()
+        if stdin == '':
+            print 'Error: no --samples provided and empty stdin'
+            sys.exit(2)
+        sample_names = parse_samples(stdin)
 
     user_id = ''
     user_api_key = ''
     email = ''
     user_hist_id = ''
 
-
-    msg = "# NEW REQUEST #"
-    logger.info(msg)
+    logger.info("# NEW REQUEST #")
 
     # Admin connection
     gi = safe_galaxy_instance(logger)
