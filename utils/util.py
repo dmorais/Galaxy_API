@@ -7,32 +7,25 @@ import string
 char = list(string.ascii_letters) + map(str, range(0,9))
 
 
-
 def create_random_email():
-    '''
-
+    """
     :return: a random string that can be used and email to create new users
-    '''
-
-    email = ''.join([random.choice(char) for i in range(9)])
-    return email + '@galaxy.genap.ca'
+    """
+    user_id = ''.join([random.choice(char) for i in range(9)])
+    return user_id + '@galaxy.genap.ca'
 
 
 def create_random_password():
-
     password = ''.join([random.choice(char) for i in range(15)])
     return password
 
-def parse_samples(file_name):
-
-    sample_names = list()
+def read_file(file_path):
     try:
-        with open(file_name, 'r') as f:
-            for line in f:
-                sample_names.append(line.strip())
-
+        with open(file_path, 'r') as f:
+            return f.read()
     except IOError:
-        print "Could not read file:", file_name
+        print 'Error: could not read file:', file_path
         sys.exit(1)
 
-    return  sample_names
+def parse_samples(content):
+    return [line.strip() for line in content.split('\n')]
