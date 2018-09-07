@@ -17,7 +17,7 @@ def create_user(gi, email, logger):
 
     user_obj = gi.users.create_remote_user(user_email=email)
 
-    msg = "USER CREATED: user_name=" + email + " id=" +  user_obj['id']
+    msg = "USER CREATED: user_name=" + email + " id=" + user_obj['id']
     logger.info(msg)
     return user_obj['id']
 
@@ -67,16 +67,15 @@ def get_user(gi, email, logger):
     user_obj = gi.users.get_users(deleted=False)
     for user in user_obj:
         if user['email'] == email:
-
-            msg = "EXISTING USER REQEUEST: user_name=" + email + " id=" +  user['id']
+            msg = "EXISTING USER REQEUEST: user_name=" + email + " id=" + user['id']
             logger.info(msg)
 
             return user['id']
 
     else:
-            msg = "User " + email + " is not on the data base. Please check credentials."
-            logger.error(msg)
-            sys.exit(1)
+        msg = "User " + email + " is not on the data base. Please check credentials."
+        logger.error(msg)
+        sys.exit(1)
 
 
 def get_library_id(gi, name):
@@ -90,7 +89,7 @@ def get_library_id(gi, name):
 
     if len(lib_obj) > 0:
         for lib in lib_obj:
-            if lib['deleted']==False and lib['name']==name:
+            if lib['deleted'] == False and lib['name'] == name:
                 lib_obj = lib
                 break
 
@@ -225,8 +224,7 @@ def get_galaxy_instance(api_key, logger):
 
         except IOError:
             logger.error('Failed to open file api_key', exc_info=True)
-            print
-            "cannot open", api_key
+            print "Error: cannot open", api_key
 
 
 def read_workflow(yaml_file, logger):
@@ -243,8 +241,7 @@ def read_workflow(yaml_file, logger):
 
         except yaml.YAMLError as exc:
             logger.error('Failed to open file yaml file', exc_info=True)
-            print
-            exc
+            print "Error" + exc
 
     # Create namedtuple from dictionary
     for work in workflows:
@@ -331,7 +328,7 @@ def create_wf_input_dict(gi, datasets, inputs, data, labels, src, logger):
             label_dict[label_dict[item.name]] = item.id
             # label_dict.pop(item.name)
 
-            # Map each index to a label dictionary
+    # Map each index to a label dictionary
     for item in inputs:
         if item.label in label_dict:
             input_dict[item.index] = {

@@ -48,6 +48,10 @@ def main():
     # Parse samples
     if args.samples is not None:
         sample_names = parse_samples(read_file(args.samples))
+        if len(sample_names)  == 0:
+            print 'Error: no samples in the sample file'
+            logger.info("# No samples in the sample file #")
+            sys.exit(2)
     else:
         stdin = sys.stdin.read().strip()
         if stdin == '':
