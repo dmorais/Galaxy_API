@@ -50,13 +50,12 @@ def main():
         sample_names = parse_samples(read_file(args.samples))
 
         if len(set(sample_names)) <= 1 and len(sample_names[0]) == 0:
-            print 'Error: no samples in the sample file'
-            logger.info("# No samples in the sample file #")
+            logger.error("# No samples in the sample file #")
             sys.exit(2)
     else:
         stdin = sys.stdin.read().strip()
         if stdin == '':
-            print 'Error: no --samples provided and empty stdin'
+            logger.error('no --samples provided and empty stdin')
             sys.exit(2)
         sample_names = parse_samples(stdin)
 

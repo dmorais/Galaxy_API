@@ -99,7 +99,6 @@ def get_library_id(gi, name, logger):
                 break
 
     if len(lib_obj['id']) <= 1:
-        print 'Error: Library id could not be retrieved'
         logger.error('Library id could not be retrieved')
         sys.exit(2)
 
@@ -125,7 +124,6 @@ def get_files_id(gi, lib_id, list_file_names, logger):
             # print 'name:', item['name'], 'id: ', item['id']
 
     if len(file_ids) == 0:
-        print 'Error: No file found matching file list name'
         logger.error('No file found matching file list name')
         sys.exit(2)
 
@@ -158,7 +156,6 @@ def create_history(gi, logger, name=None):
     hist_obj = gi.histories.create_history(name=name)
 
     if len(hist_obj['id']) <= 1:
-        print 'Error: History could not be created'
         logger.error('History could not be created')
         sys.exit(2)
 
