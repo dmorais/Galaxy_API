@@ -114,6 +114,11 @@ def get_files_id(gi, lib_id, list_file_names):
             file_ids.append(item['id'])
             # print 'name:', item['name'], 'id: ', item['id']
 
+    if len(file_ids) == 0:
+        logger.info('No file found matching file list name')
+        print 'Error: No file found matching file list name'
+        sys.exit(2)
+
     return file_ids
 
 
@@ -241,7 +246,7 @@ def read_workflow(yaml_file, logger):
 
         except yaml.YAMLError as exc:
             logger.error('Failed to open file yaml file', exc_info=True)
-            print "Error" + exc
+            print "Error: " + exc
 
     # Create namedtuple from dictionary
     for work in workflows:
