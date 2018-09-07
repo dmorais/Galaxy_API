@@ -115,7 +115,6 @@ def get_files_id(gi, lib_id, list_file_names):
             # print 'name:', item['name'], 'id: ', item['id']
 
     if len(file_ids) == 0:
-        logger.info('No file found matching file list name')
         print 'Error: No file found matching file list name'
         sys.exit(2)
 
