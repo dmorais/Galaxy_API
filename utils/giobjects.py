@@ -147,7 +147,7 @@ def upload_from_lib(gi, hist_id, file_id, logger):
     logger.info(msg)
 
 
-def create_history(gi, name=None, logger):
+def create_history(gi, logger, name=None):
     '''
 
     :param gi: Galaxy instance object

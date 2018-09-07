@@ -99,7 +99,7 @@ def main():
         user_hist_id = args.history_id
     else:
         now = datetime.now().strftime("%Y-%m-%d_%H:%M")
-        user_hist_id = create_history(gi_user, args.library + '_' + now, logger)
+        user_hist_id = create_history(gi_user, logger, args.library + '_' + now)
 
     # Get Library id
     lib_id = get_library_id(gi_user, args.library, logger)
