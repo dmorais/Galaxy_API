@@ -116,7 +116,7 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    print url, email, user_hist_id
+    print url + '/history/view_multiple', email, user_hist_id
 
 
 if __name__ == '__main__':
