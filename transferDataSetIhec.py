@@ -48,7 +48,7 @@ def main():
     # Parse samples
     if args.samples is not None:
         sample_names = parse_samples(read_file(args.samples))
-        
+
         if len(set(sample_names)) <= 1 and len(sample_names[0]) == 0:
             print 'Error: no samples in the sample file'
             logger.info("# No samples in the sample file #")
@@ -77,7 +77,7 @@ def main():
     # if user exists get his id and check for his  API key (or create one)
     if args.email:
         user_id = get_user(gi, args.email, logger)
-        user_api_key = create_api_key(gi, user_id)
+        user_api_key = create_api_key(gi, user_id, logger)
         email = args.email
 
     # Create email, password, user account and API key
@@ -86,7 +86,7 @@ def main():
         user_id = create_user(gi, email, logger)
 
         # print "user id: ", user_id
-        user_api_key = create_api_key(gi, user_id)
+        user_api_key = create_api_key(gi, user_id, logger)
 
         # print "api_key:", user_api_key
 
@@ -99,13 +99,13 @@ def main():
         user_hist_id = args.history_id
     else:
         now = datetime.now().strftime("%Y-%m-%d_%H:%M")
-        user_hist_id = create_history(gi_user, args.library + '_' + now)
+        user_hist_id = create_history(gi_user, args.library + '_' + now, logger)
 
     # Get Library id
-    lib_id = get_library_id(gi_user, args.library)
+    lib_id = get_library_id(gi_user, args.library, logger)
 
     # Get list of file ids
-    file_id = get_files_id(gi_user, lib_id, sample_names)
+    file_id = get_files_id(gi_user, lib_id, sample_names, logger)
 
     # Upload files to history
     upload_from_lib(gi_user, user_hist_id, file_id, logger)
@@ -114,7 +114,7 @@ def main():
     password = create_random_password()
 
     # create proxy pass
-    command = 'sh /proxydata/adduser.sh ' + email  + ' ' + password
+    command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
     print url, email, user_hist_id

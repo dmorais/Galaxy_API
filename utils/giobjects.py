@@ -22,7 +22,7 @@ def create_user(gi, email, logger):
     return user_obj['id']
 
 
-def create_api_key(gi, id):
+def create_api_key(gi, id, logger):
     '''
     :description: Check if a user already has an api_key, if not create one
     :param gi: Galaxy instance object
@@ -36,6 +36,11 @@ def create_api_key(gi, id):
     # Create one if it does not exists
     if api_key == 'Not available.':
         api_key = gi.users.create_user_apikey(id)
+
+    if len(api_key) <= 1:
+        logger.info('api_key does not exists or could not be generated')
+        print 'Error: api_key does not exists or could not be generated'
+        sys.exit(2)
 
     return api_key
 
@@ -78,7 +83,7 @@ def get_user(gi, email, logger):
         sys.exit(1)
 
 
-def get_library_id(gi, name):
+def get_library_id(gi, name, logger):
     '''
 
     :param gi: Galaxy instance object
@@ -93,10 +98,15 @@ def get_library_id(gi, name):
                 lib_obj = lib
                 break
 
+    if len(lib_obj['id']) <= 1:
+        print 'Error: Library id could not be retrieved'
+        logger.error('Library id could not be retrieved')
+        sys.exit(2)
+
     return lib_obj['id']
 
 
-def get_files_id(gi, lib_id, list_file_names):
+def get_files_id(gi, lib_id, list_file_names, logger):
     '''
     traverse all the libary tree and get the ids of all datasets that are included in the list of file names
     :param gi: Galaxy instance object
@@ -116,6 +126,7 @@ def get_files_id(gi, lib_id, list_file_names):
 
     if len(file_ids) == 0:
         print 'Error: No file found matching file list name'
+        logger.error('No file found matching file list name')
         sys.exit(2)
 
     return file_ids
@@ -136,7 +147,7 @@ def upload_from_lib(gi, hist_id, file_id, logger):
     logger.info(msg)
 
 
-def create_history(gi, name=None):
+def create_history(gi, name=None, logger):
     '''
 
     :param gi: Galaxy instance object
@@ -145,6 +156,12 @@ def create_history(gi, name=None):
     '''
 
     hist_obj = gi.histories.create_history(name=name)
+
+    if len(hist_obj['id']) <= 1:
+        print 'Error: History could not be created'
+        logger.error('History could not be created')
+        sys.exit(2)
+
     return hist_obj['id']
 
 
