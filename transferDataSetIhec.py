@@ -115,7 +115,14 @@ def main():
     # create proxy pass
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
-    print url, email, user_hist_id
+
+    galaxy_sesssion = {
+        'email': email,
+        'history_id': user_hist_id,
+        'user_id': user_id
+    }
+
+    print galaxy_session
 
 
 if __name__ == '__main__':
