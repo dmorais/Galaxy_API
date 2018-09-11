@@ -114,7 +114,7 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    print json.dumps({ 'url': url, 'emai': email, 'history_id': user_hist_id, 'user_id': user_id })
+    print json.dumps({ 'url': url, 'email': email, 'history_id': user_hist_id, 'user_id': user_id })
 
 
 
