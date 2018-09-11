@@ -1,6 +1,6 @@
 import argparse
 import sys
-from collections import namedtuple, OrderedDict
+from collections import namedtuple
 from bioblend import galaxy
 import os
 import logging
