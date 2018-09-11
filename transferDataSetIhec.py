@@ -1,6 +1,6 @@
 import argparse
 import sys
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from bioblend import galaxy
 import os
 import logging
@@ -113,13 +113,13 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    galaxy_session = {
+    galaxy_session = orderedict({
         'email': email,
         'history_id': user_hist_id,
         'user_id': user_id
-    }
+    })
 
-    print  galaxy_session
+    print galaxy_session
 
 
 if __name__ == '__main__':
