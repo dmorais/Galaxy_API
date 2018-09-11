@@ -63,6 +63,7 @@ def main():
     user_api_key = ''
     email = ''
     user_hist_id = ''
+    new_user_id = None
 
     logger.info("# NEW REQUEST #")
 
@@ -87,6 +88,9 @@ def main():
         # print "user id: ", user_id
         user_api_key = create_api_key(gi, user_id, logger)
 
+        new_user_id = user_id # set this in case the new user needs to be deleted
+
+
         # print "api_key:", user_api_key
 
     # User connection
@@ -101,10 +105,10 @@ def main():
         user_hist_id = create_history(gi_user, logger, args.library + '_' + now)
 
     # Get Library id
-    lib_id = get_library_id(gi_user, args.library, logger)
+    lib_id = get_library_id(gi_user, args.library, logger, new_user_id)
 
     # Get list of file ids
-    file_id = get_files_id(gi_user, lib_id, sample_names, logger)
+    file_id = get_files_id(gi_user, lib_id, sample_names, logger, new_user_id)
 
     # Upload files to history
     upload_from_lib(gi_user, user_hist_id, file_id, logger)
