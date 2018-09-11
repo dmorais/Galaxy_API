@@ -5,6 +5,7 @@ from bioblend import galaxy
 import os
 import logging
 import pprint
+import json
 from utils.loggerinitializer import *
 from utils.giobjects import *
 from utils.util import create_random_email, create_random_password, read_file, parse_samples
@@ -113,7 +114,7 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    print '{ email:' + email + ' , ' + 'history_id:' + user_hist_id + ' , ' + 'user_id:' +  user_id + ' }'
+    print json.dumps({ 'url': url, 'email': email, 'history_id': user_hist_id, 'user_id': user_id })
 
 
 
