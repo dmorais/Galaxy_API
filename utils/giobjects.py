@@ -98,7 +98,7 @@ def get_library_id(gi, name, logger):
                 lib_obj = lib
                 break
 
-    if len(lib_obj['id']) <= 1:
+    if len(lib_obj) <= 1:
         logger.error('Library id could not be retrieved')
         sys.exit(2)
 
