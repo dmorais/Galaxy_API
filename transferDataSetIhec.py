@@ -113,13 +113,13 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    galaxy_sesssion = {
+    galaxy_session = {
         'email': email,
         'history_id': user_hist_id,
         'user_id': user_id
     }
 
-    print galaxy_session
+    print  galaxy_session
 
 
 if __name__ == '__main__':
