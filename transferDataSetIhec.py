@@ -113,7 +113,7 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    galaxy_session = orderedict({
+    galaxy_session = OrderedDict({
         'email': email,
         'history_id': user_hist_id,
         'user_id': user_id
