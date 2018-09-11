@@ -63,12 +63,17 @@ def main():
     user_api_key = ''
     email = ''
     user_hist_id = ''
-    new_user_id = None
 
     logger.info("# NEW REQUEST #")
 
     # Admin connection
     gi = safe_galaxy_instance(logger)
+
+    # Get Library id
+    lib_id = get_library_id(gi, args.library, logger)
+
+    # Get list of file ids
+    file_id = get_files_id(gi, lib_id, sample_names, logger)
 
     if args.delete:
         delete_user(gi, args.delete, logger)
@@ -88,14 +93,8 @@ def main():
         # print "user id: ", user_id
         user_api_key = create_api_key(gi, user_id, logger)
 
-        new_user_id = user_id # set this in case the new user needs to be deleted
-
-
-        # print "api_key:", user_api_key
-
     # User connection
     gi_user = safe_galaxy_instance(logger, api_key=user_api_key)
-
 
     # create history
     if args.history_id:
@@ -103,12 +102,6 @@ def main():
     else:
         now = datetime.now().strftime("%Y-%m-%d_%H:%M")
         user_hist_id = create_history(gi_user, logger, args.library + '_' + now)
-
-    # Get Library id
-    lib_id = get_library_id(gi_user, args.library, logger, gi, new_user_id)
-
-    # Get list of file ids
-    file_id = get_files_id(gi_user, lib_id, sample_names, logger, gi, new_user_id)
 
     # Upload files to history
     upload_from_lib(gi_user, user_hist_id, file_id, logger)

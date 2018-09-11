@@ -83,7 +83,7 @@ def get_user(gi, email, logger):
         sys.exit(1)
 
 
-def get_library_id(gi, name, logger, admin_gi, new_user_id=None):
+def get_library_id(gi, name, logger):
     '''
 
     :param gi: Galaxy instance object
@@ -100,15 +100,12 @@ def get_library_id(gi, name, logger, admin_gi, new_user_id=None):
 
     if len(lib_obj) <= 1:
         logger.error('Library id could not be retrieved')
-
-        if new_user_id is not None:
-            delete_user(admin_gi, new_user_id, logger)
         sys.exit(2)
 
     return lib_obj['id']
 
 
-def get_files_id(gi, lib_id, list_file_names, logger, admin_gi, new_user_id=None):
+def get_files_id(gi, lib_id, list_file_names, logger):
     '''
     traverse all the libary tree and get the ids of all datasets that are included in the list of file names
     :param gi: Galaxy instance object
@@ -128,9 +125,6 @@ def get_files_id(gi, lib_id, list_file_names, logger, admin_gi, new_user_id=None
 
     if len(file_ids) == 0:
         logger.error('No file found matching file list name')
-
-        if new_user_id is not None:
-            delete_user(admin_gi, new_user_id, logger)
         sys.exit(2)
 
     return file_ids
