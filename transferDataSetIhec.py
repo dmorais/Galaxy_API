@@ -2,6 +2,7 @@ import argparse
 import json
 import logging
 import os
+import os.path
 import pprint
 import subprocess
 import sys
@@ -45,7 +46,7 @@ def main():
                         help="Name of the library holding the files.",
                         required=True)
 
-    parser.add_argument("--dump", default='lib_dump', action="store",
+    parser.add_argument("--dump", default=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib_dump'), action="store",
                         help="A path to the directory where de library dictonary was dumped. Default lib_dump",
                         required=False)
 
