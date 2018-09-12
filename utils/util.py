@@ -33,8 +33,7 @@ def parse_samples(content):
 
 
 def get_file_id_from_pickle(lib_name, lib_dir, sample_names, logger):
-
-    ditc_ids = ''
+    dict_ids = None
     file_id = list()
 
     try:
