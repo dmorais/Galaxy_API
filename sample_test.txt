@@ -1,1 +1,1 @@
-/text/list2.txt
+/Roadmap/hg19/30783.Roadmap.SRS183515_H-23758_729.Chromatin_Acc.signal.bigWig

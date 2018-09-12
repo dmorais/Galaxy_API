@@ -1,17 +1,18 @@
 import argparse
+import json
+import logging
+import os
+import pprint
+import subprocess
 import sys
 from collections import namedtuple
-from bioblend import galaxy
-import os
-import logging
-import pprint
-import json
-from utils.loggerinitializer import *
-from utils.giobjects import *
-from utils.util import create_random_email, create_random_password, read_file, parse_samples
-from distutils.dir_util import mkpath
-import subprocess
 from datetime import datetime
+from distutils.dir_util import mkpath
+
+from bioblend import galaxy
+from utils.giobjects import *
+from utils.loggerinitializer import *
+from utils.util import create_random_email, create_random_password, read_file, parse_samples, get_file_id_from_pickle
 
 # Logs
 mkpath(os.getcwd() + "/logs/")
@@ -44,6 +45,10 @@ def main():
                         help="Name of the library holding the files.",
                         required=True)
 
+    parser.add_argument("--dump", default='lib_dump', action="store",
+                        help="A path to the directory where de library dictonary was dumped. Default lib_dump",
+                        required=False)
+
     args = parser.parse_args()
 
     # Parse samples
@@ -70,11 +75,8 @@ def main():
     # Admin connection
     gi = safe_galaxy_instance(logger)
 
-    # Get Library id
-    lib_id = get_library_id(gi, args.library, logger)
-
     # Get list of file ids
-    file_id = get_files_id(gi, lib_id, sample_names, logger)
+    file_id = get_file_id_from_pickle(args.library, args.dump, sample_names, logger)
 
     if args.delete:
         delete_user(gi, args.delete, logger)
@@ -114,8 +116,7 @@ def main():
     command = 'sh /proxydata/adduser.sh ' + email + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
-    print json.dumps({ 'url': url, 'email': email, 'history_id': user_hist_id, 'user_id': user_id })
-
+    print json.dumps({'url': url, 'email': email, 'history_id': user_hist_id, 'user_id': user_id})
 
 
 if __name__ == '__main__':

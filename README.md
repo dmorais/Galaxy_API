@@ -12,7 +12,8 @@ Bioblend 0.11.0
 
 ### **Installation**
 After cloning edit these files:
-* util/config.py  (add server and port to the dictionary)
+* util/config.py.template  ( copy it to util/config.py and add server 
+and port to the dictionary)
 
 on your .bashrc add the line
 ````
@@ -51,13 +52,42 @@ This script creates a Galaxy Library from one of three different sources:
  the yaml file.
 
 ```
-
-
     python create_library.py yaml_file.yml
+```
+
+
+#### 2. **pickle_library_dataset.py**
+
+This script creates a pickled version of the Galaxy library, where the 
+file name is the key and the Galaxy file id is the value. This speed up
+the lookup for file IDs.
+
+This script must be run after the Library creation and at every new library
+release.
 
 ```
 
-#### 2. **transferDataSetIhec.py**
+python pickle_library_dataset.py -l library_name [optional -d path to the pickled file will be created]
+```
+
+The script help
+```
+usage: pickle_library_dataset.py [-h] -l LIBRARY [-d DUMP]
+
+A tool to create binary dictionary of a Galaxy library where the keys are file
+namesand the values are file ids
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LIBRARY, --library LIBRARY
+                        Name of the library holding the files.
+  -d DUMP, --dump DUMP  A path to the directory where de library will be
+                        dumped. Default lib_dump
+
+```
+
+
+#### 3. **transferDataSetIhec.py**
 
 ## Set up on Galaxy
 This Galaxy option must be set to True. The Galaxy authetication must be
@@ -88,6 +118,7 @@ The script can also delete users from Galaxy.
     
 
 
+    NOTE: pass the --dump argument if the pickled library is not at its default location (lib_dump)
 ````
 
 **The dataset-list.txt file** is a file containing the path of each dataset
@@ -130,6 +161,9 @@ optional arguments:
                         
   -l LIBRARY, --library LIBRARY
                         Name of the library holding the files.
+  
+  --dump DUMP           A path to the directory where de library dictonary was
+                        dumped. Default lib_dump
 
 ```
 

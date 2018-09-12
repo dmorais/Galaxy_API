@@ -105,27 +105,42 @@ def get_library_id(gi, name, logger):
     return lib_obj['id']
 
 
-def get_files_id(gi, lib_id, list_file_names, logger):
+def get_files_id(gi, lib_id, list_file_names, logger, all_lib=None):
     '''
     traverse all the libary tree and get the ids of all datasets that are included in the list of file names
     :param gi: Galaxy instance object
     :param lib_id: library Id
     :param list_file_names: a list containing all the files that will be imported to the history
-    :return: a list of library files ids.
+    :param logger: a logger object
+    :param all_lib: a int. If present the function will return a dict will all files. Otherwise it will return a list
+    :return: a list of library files ids (if all_lib is None), otherwise a dictionary.
     '''
 
     lib_obj = gi.libraries.show_library(library_id=lib_id, contents=True)
 
-    file_ids = list()
+    file_ids = ''
 
-    for item in lib_obj:
-        if item['type'] == 'file' and item['name'] in list_file_names:
-            file_ids.append(item['id'])
-            # print 'name:', item['name'], 'id: ', item['id']
+    if all_lib is not None:
+        file_ids = dict()
 
-    if len(file_ids) == 0:
-        logger.error('No file found matching file list name')
-        sys.exit(2)
+        for item in lib_obj:
+            file_ids[item['name']] = item['id']
+
+        if len(file_ids.keys()) ==0:
+            logger.error('No files in the library')
+            sys.exit(2)
+
+    else:
+        file_ids = list()
+
+        for item in lib_obj:
+            if item['type'] == 'file' and item['name'] in list_file_names:
+                file_ids.append(item['id'])
+                # print 'name:', item['name'], 'id: ', item['id']
+
+        if len(file_ids) == 0:
+            logger.error('No file found matching file list name')
+            sys.exit(2)
 
     return file_ids
 

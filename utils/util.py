@@ -1,6 +1,7 @@
 import random
 import sys
 import string
+import pickle
 
 # num = range(0,10)
 # num = map(str, num)
@@ -29,3 +30,27 @@ def read_file(file_path):
 
 def parse_samples(content):
     return [line.strip() for line in content.split('\n')]
+
+
+def get_file_id_from_pickle(lib_name, lib_dir, sample_names, logger):
+
+    ditc_ids = ''
+    file_id = list()
+
+    try:
+        dict_ids = pickle.load(open(lib_dir + '/' + lib_name + '.pickle', 'rb'))
+
+        for sample in sample_names:
+            if len(sample) > 1 and dict_ids.get(sample) is not None:
+                file_id.append(dict_ids[sample])
+
+    except IOError:
+        logger.error('No Library with the specified name.')
+        sys.exit(2)
+
+    if len(file_id) < 1:
+        logger.error('Sample name do not match Libary sample names.')
+        sys.exit(2)
+
+    return file_id
+

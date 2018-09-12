@@ -103,3 +103,8 @@ ENV/
 # logs
 logs/*
 
+# config
+utils/config.py
+
+# pickled files
+lib_dump/*.pickle
