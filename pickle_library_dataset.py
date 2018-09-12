@@ -24,7 +24,7 @@ def main():
                         help="Name of the library holding the files.",
                         required=True)
 
-    parser.add_argument("-d", "--dump", default='lib_dump', action="store",
+    parser.add_argument("-d", "--dump", default=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib_dump'), action="store",
                         help="A path to the directory where de library will be dumped. Default lib_dump",
                         required=False)
 
