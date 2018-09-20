@@ -13,7 +13,7 @@ def create_random_email():
     :return: a random string that can be used and email to create new users
     """
     email = ''.join([random.choice(char) for i in range(9)])
-    return email + '@galaxy.genap.ca'
+    return email.lower() + '@galaxy.genap.ca'
 
 
 def create_random_password():
