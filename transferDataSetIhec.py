@@ -115,7 +115,7 @@ def main():
 
     # create proxy pass
     user_name = email.split('@')
-    command = 'sudo sh /proxydata/adduser.sh ' + user_name[0] + ' ' + password
+    command = 'sh /proxydata/adduser.sh ' + user_name[0] + ' ' + password
     url = subprocess.check_output(command, shell=True)
 
     print json.dumps({'url': url, 'email': email, 'history_id': user_hist_id, 'user_id': user_id})
